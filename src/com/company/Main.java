@@ -1,5 +1,6 @@
 package com.company;
 
+import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -9,18 +10,23 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
 
-        int alto = 3; //scanner.nextInt();
-        int ancho = 3; //scanner.nextInt();
+        String[] cellColors = {"\033[37;47m","\033[34;47m","\033[32;47m","\033[91;47m","\033[94;47m","\033[31;47m","\033[96;47m","\033[35;47m","\033[37;47m", "\033[30;100m","\033[30;41m"};
+
+        int alto = 25; //scanner.nextInt();
+        int ancho = 25; //scanner.nextInt();
         int dificultad = 0; //scanner.nextInt();
 
         int[][] cuentaMinas = new int[alto][ancho];
         boolean[][] tieneMina = new boolean[alto][ancho];
         boolean[][] destapada = new boolean[alto][ancho];
 
-        int totalMinas = 0;
-        if(dificultad == 0){
-            totalMinas = alto*ancho/6;
+        int densidad = 8;
+        if(dificultad == 1){
+            densidad = 7;
+        } else if(dificultad == 2){
+            densidad = 6;
         }
+        int totalMinas = alto*ancho/densidad;
 
         for (int m = 0; m < totalMinas;) {
             int i = random.nextInt(alto);
@@ -54,29 +60,42 @@ public class Main {
 
         while(true) {
 
-            for (int i = 0; i < alto; i++) {
-                for (int j = 0; j < ancho; j++) {
-                    if (tieneMina[i][j]) {
-                        System.out.print("*");
-                    } else{
-                        System.out.print(cuentaMinas[i][j]);
-                    }
-                }
-                System.out.println();
+            System.out.print("   ");
+            for (int i = 0; i < ancho; i++) {
+                System.out.format("%2d ", i);
             }
             System.out.println();
-
-            System.out.println(gameOver ? ":(" : ":)");
             for (int i = 0; i < alto; i++) {
+                System.out.format("%2d ", i);
                 for (int j = 0; j < ancho; j++) {
-                    if (destapada[i][j]) {
-                        System.out.print(tieneMina[i][j] ? "*" : cuentaMinas[i][j] == 0 ? "." : ""+cuentaMinas[i][j]);
+                    if (tieneMina[i][j]) {
+                        System.out.print(cellColors[10] + " * ");
                     } else{
-                        System.out.print("#");
+                        System.out.print(cellColors[cuentaMinas[i][j]] + " " + cuentaMinas[i][j] + " ");
                     }
                 }
-                System.out.println();
+                System.out.println("\033[0m");
             }
+            System.out.println("\033[0m");
+
+            System.out.print("   ");
+            for (int i = 0; i < ancho; i++) {
+                System.out.format("%2d ", i);
+            }
+            System.out.println();
+            for (int i = 0; i < alto; i++) {
+                System.out.format("%2d ", i);
+                for (int j = 0; j < ancho; j++) {
+                    if (destapada[i][j]) {
+                        System.out.print(tieneMina[i][j] ? cellColors[10] + " * " : cellColors[cuentaMinas[i][j]] + " " + cuentaMinas[i][j] + " ");
+                    } else{
+                        System.out.print(cellColors[9] + " . ");
+                    }
+                    System.out.print("\033[0m");
+                }
+                System.out.println("\033[0m");
+            }
+            System.out.println("\033[0m");
 
             if(gameOver || destapadas == casillasSinMina) break;
 
@@ -105,10 +124,15 @@ public class Main {
                             for (int j = 0; j < ancho; j++) {
                                 if (destapada[i][j] && cuentaMinas[i][j] == 0) {
                                     int[][] vecinas = {
-                                            {i - 1, j - 1}, {i - 1, j}, {i - 1, j + 1},
+                                                            {i - 1, j},
                                             {i    , j - 1},             {i    , j + 1},
-                                            {i + 1, j - 1}, {i + 1, j}, {i + 1, j + 1},
+                                                            {i + 1, j}
                                     };
+//                                    int[][] vecinas = {
+//                                            {i - 1, j - 1}, {i - 1, j}, {i - 1, j + 1},
+//                                            {i    , j - 1},             {i    , j + 1},
+//                                            {i + 1, j - 1}, {i + 1, j}, {i + 1, j + 1},
+//                                    };
 
                                     for (int k = 0; k < vecinas.length; k++) {
                                         int vf = vecinas[k][0];

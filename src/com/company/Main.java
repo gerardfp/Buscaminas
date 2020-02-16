@@ -6,24 +6,58 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
-
+        //                          0              1            2           3               4               5           6               7           8               t              m
         String[] cellColors = {"\033[37;47m","\033[34;47m","\033[32;47m","\033[91;47m","\033[94;47m","\033[31;47m","\033[96;47m","\033[35;47m","\033[37;47m", "\033[30;100m","\033[30;41m"};
+
+        System.out.print("\033\143");
+
+        System.out.println("\n" +
+                "  ██████╗ ██╗   ██╗███████╗ ██████╗ █████╗ ███╗   ███╗██╗███╗   ██╗ █████╗ ███████╗\n" +
+                "  ██╔══██╗██║   ██║██╔════╝██╔════╝██╔══██╗████╗ ████║██║████╗  ██║██╔══██╗██╔════╝\n" +
+                "  ██████╔╝██║   ██║███████╗██║     ███████║██╔████╔██║██║██╔██╗ ██║███████║███████╗\n" +
+                "  ██╔══██╗██║   ██║╚════██║██║     ██╔══██║██║╚██╔╝██║██║██║╚██╗██║██╔══██║╚════██║\n" +
+                "  ██████╔╝╚██████╔╝███████║╚██████╗██║  ██║██║ ╚═╝ ██║██║██║ ╚████║██║  ██║███████║\n" +
+                "  ╚═════╝  ╚═════╝ ╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "                 ╗      ╔═╗╔═╗╔═╗╦ ╦\n" +
+                "                 ║      ║╣ ╠═╣╚═╗╚╦╝\n" +
+                "                 ╩      ╚═╝╩ ╩╚═╝ ╩ \n" +
+                "\n" +
+                "                ╔═╗     ╔╦╗╔═╗╦═╗╦╦ ╦╔╦╗\n" +
+                "                ╔═╝     ║║║║╣ ║ ║║║ ║║║║\n" +
+                "                ╚═╝     ╩ ╩╚═╝╩═╝╩╚═╝╩ ╩\n" +
+                "\n" +
+                "                ╔═╗     ╦ ╦╔═╗╦═╗╦═╗\n" +
+                "                 ═╣     ╠═╣╠═╣╠╦╝║ ║\n" +
+                "                ╚═╝     ╩ ╩╩ ╩╩╚═╩═╝\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "                ╔═╗     ╔═╗╔═╗╔═╗╦═╗╔═╗╔═╗\n" +
+                "                ║ ║     ╚═╗║  ║ ║╠╦╝║╣ ╚═╗\n" +
+                "                ╚═╝     ╚═╝╚═╝╚═╝╩╚═╚═╝╚═╝");
+
+        scanner.nextLine();
+
+        System.out.print("\033\143");
 
         int alto = 25; //scanner.nextInt();
         int ancho = 25; //scanner.nextInt();
-        int dificultad = 0; //scanner.nextInt();
+        int dificultad = 1; //scanner.nextInt();
 
         int[][] cuentaMinas = new int[alto][ancho];
         boolean[][] tieneMina = new boolean[alto][ancho];
         boolean[][] destapada = new boolean[alto][ancho];
 
         int densidad = 8;
-        if(dificultad == 1){
+        if(dificultad == 2){
             densidad = 7;
-        } else if(dificultad == 2){
+        } else if(dificultad == 3){
             densidad = 6;
         }
         int totalMinas = alto*ancho/densidad;
@@ -49,8 +83,6 @@ public class Main {
                         cuentaMinas[vf][vc]++;
                     }
                 }
-
-
             }
         }
 
@@ -59,24 +91,24 @@ public class Main {
         boolean gameOver = false;
 
         while(true) {
-
-            System.out.print("   ");
-            for (int i = 0; i < ancho; i++) {
-                System.out.format("%2d ", i);
-            }
-            System.out.println();
-            for (int i = 0; i < alto; i++) {
-                System.out.format("%2d ", i);
-                for (int j = 0; j < ancho; j++) {
-                    if (tieneMina[i][j]) {
-                        System.out.print(cellColors[10] + " * ");
-                    } else{
-                        System.out.print(cellColors[cuentaMinas[i][j]] + " " + cuentaMinas[i][j] + " ");
-                    }
-                }
-                System.out.println("\033[0m");
-            }
-            System.out.println("\033[0m");
+            System.out.print("\033\143");
+//            System.out.print("   ");
+//            for (int i = 0; i < ancho; i++) {
+//                System.out.format("%2d ", i);
+//            }
+//            System.out.println();
+//            for (int i = 0; i < alto; i++) {
+//                System.out.format("%2d ", i);
+//                for (int j = 0; j < ancho; j++) {
+//                    if (tieneMina[i][j]) {
+//                        System.out.print(cellColors[10] + " * ");
+//                    } else{
+//                        System.out.print(cellColors[cuentaMinas[i][j]] + " " + cuentaMinas[i][j] + " ");
+//                    }
+//                }
+//                System.out.println("\033[0m");
+//            }
+//            System.out.println("\033[0m");
 
             System.out.print("   ");
             for (int i = 0; i < ancho; i++) {
@@ -89,13 +121,14 @@ public class Main {
                     if (destapada[i][j]) {
                         System.out.print(tieneMina[i][j] ? cellColors[10] + " * " : cellColors[cuentaMinas[i][j]] + " " + cuentaMinas[i][j] + " ");
                     } else{
-                        System.out.print(cellColors[9] + " . ");
+                        System.out.print(cellColors[9] + " · ");
                     }
                     System.out.print("\033[0m");
                 }
                 System.out.println("\033[0m");
             }
             System.out.println("\033[0m");
+
 
             if(gameOver || destapadas == casillasSinMina) break;
 

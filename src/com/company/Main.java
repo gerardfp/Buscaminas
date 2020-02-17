@@ -125,10 +125,11 @@ public class Main {
                                 } else {
                                     System.out.print(colores[cuentaMinas[i][j]] + " " + cuentaMinas[i][j] + " ");
                                 }
-                                System.out.println("\033[0m");
+                                System.out.print("\033[0m");
                             }
                             System.out.println();
                         }
+                        System.out.println();
                     }
 
                     System.out.format(" \033[30;101mTime: \033[1;91;40m %4s\033[0m%n%n", duracion);

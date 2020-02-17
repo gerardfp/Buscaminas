@@ -3,6 +3,7 @@ package com.company;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -13,7 +14,6 @@ public class Main {
         Random random = new Random();
         File ficheroScores = new File("scores.txt");
         boolean debug = false;
-
 
         //                          0              1            2           3               4               5              6               7             8               t              m
         String[] colores = {"\033[37;47m", "\033[34;47m", "\033[32;47m", "\033[91;47m", "\033[94;47m", "\033[31;47m", "\033[96;47m", "\033[35;47m", "\033[37;47m", "\033[30;100m", "\033[30;41m"};
@@ -127,6 +127,7 @@ public class Main {
                                 }
                                 System.out.println("\033[0m");
                             }
+                            System.out.println();
                         }
                     }
 
@@ -146,6 +147,7 @@ public class Main {
                             }
                             System.out.print("\033[0m");
                         }
+                        System.out.println();
                     }
 
 
@@ -234,8 +236,7 @@ public class Main {
                 System.out.println("\n" +
                         "  \033[1;30;105m  ╔╦╗╔═╗╔═╗  ╔═╗╔═╗╔═╗╦═╗╔═╗╔═╗  \033[0m\n" +
                         "  \033[1;30;105m   ║ ║ ║╠═╝  ╚═╗║  ║ ║╠╦╝║╣ ╚═╗  \033[0m\n" +
-                        "  \033[1;30;105m   ╩ ╚═╝╩    ╚═╝╚═╝╚═╝╩╚═╚═╝╚═╝  \033[0m");
-                System.out.println();
+                        "  \033[1;30;105m   ╩ ╚═╝╩    ╚═╝╚═╝╚═╝╩╚═╚═╝╚═╝  \033[0m\n");
 
                 Scanner scannerScores = new Scanner(ficheroScores);
                 while(scannerScores.hasNext()){

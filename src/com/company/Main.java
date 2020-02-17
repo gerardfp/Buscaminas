@@ -11,12 +11,12 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
-        File file = new File("scores.txt");
+        File ficheroScores = new File("scores.txt");
         boolean debug = false;
 
 
-        //                          0              1            2           3               4               5           6               7           8               t              m
-        String[] cellColors = {"\033[37;47m", "\033[34;47m", "\033[32;47m", "\033[91;47m", "\033[94;47m", "\033[31;47m", "\033[96;47m", "\033[35;47m", "\033[37;47m", "\033[30;100m", "\033[30;41m"};
+        //                          0              1            2           3               4               5              6               7             8               t              m
+        String[] colores = {"\033[37;47m", "\033[34;47m", "\033[32;47m", "\033[91;47m", "\033[94;47m", "\033[31;47m", "\033[96;47m", "\033[35;47m", "\033[37;47m", "\033[30;100m", "\033[30;41m"};
 
         while (true) {
             System.out.print("\033\143");
@@ -50,23 +50,23 @@ public class Main {
                     "               \033[45m ║ ║     ╚═╗║  ║ ║╠╦╝║╣ ╚═╗  \033[0m\n" +
                     "               \033[45m ╚═╝     ╚═╝╚═╝╚═╝╩╚═╚═╝╚═╝  \033[0m");
 
-            int option = scanner.nextInt();
+            int opcion = scanner.nextInt();
             scanner.nextLine();
 
 
-            if(option != 0) {
+            if(opcion != 0) {
 
-                long startTime = System.currentTimeMillis();
-                long endTime;
+                long tiempoInicio = System.currentTimeMillis();
+                int duracion = 0;
 
                 int alto = 3;
                 int ancho = 3;
                 int densidad = 8;
-                if (option == 2) {
+                if (opcion == 2) {
                     alto = 8;
                     ancho = 8;
                     densidad = 7;
-                } else if (option == 3) {
+                } else if (opcion == 3) {
                     alto = 14;
                     ancho = 14;
                     densidad = 6;
@@ -109,7 +109,7 @@ public class Main {
                 while (true) {
                     System.out.print("\033\143");
 
-                    endTime = System.currentTimeMillis();
+                    duracion = (int) (System.currentTimeMillis() - tiempoInicio)/1000;
 
                     if(debug) {
                         System.out.print("   ");
@@ -121,17 +121,16 @@ public class Main {
                             System.out.format("%2d ", i);
                             for (int j = 0; j < ancho; j++) {
                                 if (tieneMina[i][j]) {
-                                    System.out.print(cellColors[10] + " * ");
+                                    System.out.print(colores[10] + " * ");
                                 } else {
-                                    System.out.print(cellColors[cuentaMinas[i][j]] + " " + cuentaMinas[i][j] + " ");
+                                    System.out.print(colores[cuentaMinas[i][j]] + " " + cuentaMinas[i][j] + " ");
                                 }
+                                System.out.println("\033[0m");
                             }
-                            System.out.println("\033[0m");
                         }
-                        System.out.println("\033[0m");
                     }
 
-                    System.out.format(" \033[30;101mTime: \033[1;91;40m %4s\033[0m%n%n", (endTime - startTime)/1000);
+                    System.out.format(" \033[30;101mTime: \033[1;91;40m %4s\033[0m%n%n", duracion);
                     System.out.print("    ");
                     for (int i = 0; i < ancho; i++) {
                         System.out.format("\033[90;103m%2d \033[0m", i);
@@ -141,15 +140,13 @@ public class Main {
                         System.out.format(" \033[90;105m%2d \033[0m", i);
                         for (int j = 0; j < ancho; j++) {
                             if (destapada[i][j]) {
-                                System.out.print(tieneMina[i][j] ? cellColors[10] + " * " : cellColors[cuentaMinas[i][j]] + " " + cuentaMinas[i][j] + " ");
+                                System.out.print(tieneMina[i][j] ? colores[10] + " * " : colores[cuentaMinas[i][j]] + " " + cuentaMinas[i][j] + " ");
                             } else {
-                                System.out.print(cellColors[9] + " · ");
+                                System.out.print(colores[9] + " · ");
                             }
                             System.out.print("\033[0m");
                         }
-                        System.out.println("\033[0m");
                     }
-                    System.out.println("\033[0m");
 
 
                     if (gameOver || destapadas == casillasSinMina) break;
@@ -215,7 +212,7 @@ public class Main {
                     System.out.println("\n\033[30;101m" +
                             "  ╦ ╦╔═╗╦ ╦  ╦  ╔═╗╔═╗╔═╗╔═╗  \n" +
                             "  ╚╦╝║ ║║ ║  ║  ║ ║║ ║╚═╗║╣   \n" +
-                            "   ╩ ╚═╝╚═╝  ╩═╝╚═╝╚═╝╚═╝╚═╝  ");
+                            "   ╩ ╚═╝╚═╝  ╩═╝╚═╝╚═╝╚═╝╚═╝  \033[0m");
                     scanner.nextLine();
                 } else {
                     System.out.println("\n\033[30;102m" +
@@ -223,16 +220,16 @@ public class Main {
                             "  ╚╦╝║ ║║ ║  ║║║ ║ ║║║  \n" +
                             "   ╩ ╚═╝╚═╝  ╚╩╝ ╩ ╝╚╝  \033[0m");
                     System.out.print("Name: ");
-                    String name = scanner.nextLine();
-                    FileWriter fileWriter = new FileWriter(file, true);
-                    fileWriter.write( (endTime-startTime)/1000 + " " + name + "\n");
+                    String nombre = scanner.nextLine();
+                    FileWriter fileWriter = new FileWriter(ficheroScores, true);
+                    fileWriter.write(duracion + " " + nombre + "\n");
                     fileWriter.close();
 
-                    option = 0;
+                    opcion = 0;
                 }
             }
 
-            if(option == 0){
+            if(opcion == 0){
                 System.out.print("\033\143");
                 System.out.println("\n" +
                         "  \033[1;30;105m  ╔╦╗╔═╗╔═╗  ╔═╗╔═╗╔═╗╦═╗╔═╗╔═╗  \033[0m\n" +
@@ -240,12 +237,12 @@ public class Main {
                         "  \033[1;30;105m   ╩ ╚═╝╩    ╚═╝╚═╝╚═╝╩╚═╚═╝╚═╝  \033[0m");
                 System.out.println();
 
-                Scanner scanner1 = new Scanner(file);
-                while(scanner1.hasNext()){
-                    int score = scanner1.nextInt();
-                    String name = scanner1.nextLine();
+                Scanner scannerScores = new Scanner(ficheroScores);
+                while(scannerScores.hasNext()){
+                    int score = scannerScores.nextInt();
+                    String nombre = scannerScores.nextLine();
 
-                    System.out.format("  \033[44m%20s \033[0m \033[42m  %8s \033[0m%n", name, score);
+                    System.out.format("  \033[44m%20s \033[0m \033[42m  %8s \033[0m%n", nombre, score);
                 }
 
                 scanner.nextLine();

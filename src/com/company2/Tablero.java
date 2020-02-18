@@ -12,10 +12,20 @@ public class Tablero {
 
     Casilla[][] casillas;
 
-    public Tablero(int alto, int ancho, int densidad) {
-        this.alto = alto;
-        this.ancho = ancho;
-        this.densidad = densidad;
+    Tablero(int dificultad) {
+
+        alto = 3;
+        ancho = 3;
+        densidad = 8;
+        if (dificultad == 2) {
+            alto = 8;
+            ancho = 8;
+            densidad = 7;
+        } else if (dificultad == 3) {
+            alto = 14;
+            ancho = 14;
+            densidad = 6;
+        }
 
         totalMinas = alto * ancho / densidad;
         casillasSinMina = ancho * alto - totalMinas;
@@ -88,6 +98,10 @@ public class Tablero {
 
     boolean valida(int fila, int columna){
         return fila >=0 && fila < alto && columna >= 0 && columna < ancho;
+    }
+
+    boolean completado(){
+        return destapadas == casillasSinMina;
     }
 
     void mostrar(){

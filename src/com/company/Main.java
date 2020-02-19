@@ -3,6 +3,7 @@ package com.company;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -13,7 +14,6 @@ public class Main {
         Random random = new Random();
         File ficheroScores = new File("scores.txt");
         boolean debug = false;
-
 
         //                          0              1            2           3               4               5              6               7             8               t              m
         String[] colores = {"\033[37;47m", "\033[34;47m", "\033[32;47m", "\033[91;47m", "\033[94;47m", "\033[31;47m", "\033[96;47m", "\033[35;47m", "\033[37;47m", "\033[30;100m", "\033[30;41m"};
@@ -32,23 +32,23 @@ public class Main {
                     "\n" +
                     "\n" +
                     "\n" +
-                    "               \033[42m  ╗      ╔═╗╔═╗╔═╗╦ ╦        \033[0m\n" +
-                    "               \033[42m  ║      ║╣ ╠═╣╚═╗╚╦╝        \033[0m\n" +
-                    "               \033[42m  ╩      ╚═╝╩ ╩╚═╝ ╩         \033[0m\n" +
+                    "               \033[42m   ╗      ╔═╗╔═╗╔═╗╦ ╦        \033[0m\n" +
+                    "               \033[42m   ║      ║╣ ╠═╣╚═╗╚╦╝        \033[0m\n" +
+                    "               \033[42m   ╩      ╚═╝╩ ╩╚═╝ ╩         \033[0m\n" +
                     "\n" +
-                    "               \033[43m ╔═╗     ╔╦╗╔═╗╦═╗╦╦ ╦╔╦╗    \033[0m\n" +
-                    "               \033[43m ╔═╝     ║║║║╣ ║ ║║║ ║║║║    \033[0m\n" +
-                    "               \033[43m ╚═╝     ╩ ╩╚═╝╩═╝╩╚═╝╩ ╩    \033[0m\n" +
+                    "               \033[43m  ╔═╗     ╔╦╗╔═╗╦═╗╦╦ ╦╔╦╗    \033[0m\n" +
+                    "               \033[43m  ╔═╝     ║║║║╣ ║ ║║║ ║║║║    \033[0m\n" +
+                    "               \033[43m  ╚═╝     ╩ ╩╚═╝╩═╝╩╚═╝╩ ╩    \033[0m\n" +
                     "\n" +
-                    "               \033[41m ╔═╗     ╦ ╦╔═╗╦═╗╦═╗        \033[0m\n" +
-                    "               \033[41m  ═╣     ╠═╣╠═╣╠╦╝║ ║        \033[0m\n" +
-                    "               \033[41m ╚═╝     ╩ ╩╩ ╩╩╚═╩═╝        \033[0m\n" +
+                    "               \033[41m  ╔═╗     ╦ ╦╔═╗╦═╗╦═╗        \033[0m\n" +
+                    "               \033[41m   ═╣     ╠═╣╠═╣╠╦╝║ ║        \033[0m\n" +
+                    "               \033[41m  ╚═╝     ╩ ╩╩ ╩╩╚═╩═╝        \033[0m\n" +
                     "\n" +
                     "\n" +
                     "\n" +
-                    "               \033[45m ╔═╗     ╔═╗╔═╗╔═╗╦═╗╔═╗╔═╗  \033[0m\n" +
-                    "               \033[45m ║ ║     ╚═╗║  ║ ║╠╦╝║╣ ╚═╗  \033[0m\n" +
-                    "               \033[45m ╚═╝     ╚═╝╚═╝╚═╝╩╚═╚═╝╚═╝  \033[0m");
+                    "               \033[45m  ╔═╗     ╔═╗╔═╗╔═╗╦═╗╔═╗╔═╗  \033[0m\n" +
+                    "               \033[45m  ║ ║     ╚═╗║  ║ ║╠╦╝║╣ ╚═╗  \033[0m\n" +
+                    "               \033[45m  ╚═╝     ╚═╝╚═╝╚═╝╩╚═╚═╝╚═╝  \033[0m");
 
             int opcion = scanner.nextInt();
             scanner.nextLine();
@@ -112,22 +112,24 @@ public class Main {
                     duracion = (int) (System.currentTimeMillis() - tiempoInicio)/1000;
 
                     if(debug) {
-                        System.out.print("   ");
+                        System.out.print("    ");
                         for (int i = 0; i < ancho; i++) {
-                            System.out.format("%2d ", i);
+                            System.out.format("\033[90;103m%2d \033[0m", i);
                         }
                         System.out.println();
                         for (int i = 0; i < alto; i++) {
-                            System.out.format("%2d ", i);
+                            System.out.format(" \033[90;105m%2d \033[0m", i);
                             for (int j = 0; j < ancho; j++) {
                                 if (tieneMina[i][j]) {
                                     System.out.print(colores[10] + " * ");
                                 } else {
                                     System.out.print(colores[cuentaMinas[i][j]] + " " + cuentaMinas[i][j] + " ");
                                 }
-                                System.out.println("\033[0m");
+                                System.out.print("\033[0m");
                             }
+                            System.out.println();
                         }
+                        System.out.println();
                     }
 
                     System.out.format(" \033[30;101mTime: \033[1;91;40m %4s\033[0m%n%n", duracion);
@@ -146,6 +148,7 @@ public class Main {
                             }
                             System.out.print("\033[0m");
                         }
+                        System.out.println();
                     }
 
 
@@ -179,15 +182,10 @@ public class Main {
                                     for (int j = 0; j < ancho; j++) {
                                         if (destapada[i][j] && cuentaMinas[i][j] == 0) {
                                             int[][] vecinas = {
-                                                    {i - 1, j},
-                                                    {i, j - 1}, {i, j + 1},
-                                                    {i + 1, j}
+                                                    {i - 1, j - 1}, {i - 1, j}, {i - 1, j + 1},
+                                                    {i    , j - 1},             {i    , j + 1},
+                                                    {i + 1, j - 1}, {i + 1, j}, {i + 1, j + 1},
                                             };
-//                                    int[][] vecinas = {
-//                                            {i - 1, j - 1}, {i - 1, j}, {i - 1, j + 1},
-//                                            {i    , j - 1},             {i    , j + 1},
-//                                            {i + 1, j - 1}, {i + 1, j}, {i + 1, j + 1},
-//                                    };
 
                                             for (int k = 0; k < vecinas.length; k++) {
                                                 int vf = vecinas[k][0];
@@ -234,8 +232,7 @@ public class Main {
                 System.out.println("\n" +
                         "  \033[1;30;105m  ╔╦╗╔═╗╔═╗  ╔═╗╔═╗╔═╗╦═╗╔═╗╔═╗  \033[0m\n" +
                         "  \033[1;30;105m   ║ ║ ║╠═╝  ╚═╗║  ║ ║╠╦╝║╣ ╚═╗  \033[0m\n" +
-                        "  \033[1;30;105m   ╩ ╚═╝╩    ╚═╝╚═╝╚═╝╩╚═╚═╝╚═╝  \033[0m");
-                System.out.println();
+                        "  \033[1;30;105m   ╩ ╚═╝╩    ╚═╝╚═╝╚═╝╩╚═╚═╝╚═╝  \033[0m\n");
 
                 Scanner scannerScores = new Scanner(ficheroScores);
                 while(scannerScores.hasNext()){

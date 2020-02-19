@@ -3,7 +3,6 @@ package com.company;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -13,10 +12,11 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
         File ficheroScores = new File("scores.txt");
-        boolean debug = false;
+        ficheroScores.createNewFile();
 
         //                          0              1            2           3               4               5              6               7             8               t              m
         String[] colores = {"\033[37;47m", "\033[34;47m", "\033[32;47m", "\033[91;47m", "\033[94;47m", "\033[31;47m", "\033[96;47m", "\033[35;47m", "\033[37;47m", "\033[30;100m", "\033[30;41m"};
+        String[] niveles = {"\033[42m  EASY  \033[0m", "\033[43m MEDIUM \033[0m", "\033[41m  HARD  \033[0m"};
 
         while (true) {
             System.out.print("\033\143");
@@ -44,6 +44,10 @@ public class Main {
                     "               \033[41m   ═╣     ╠═╣╠═╣╠╦╝║ ║        \033[0m\n" +
                     "               \033[41m  ╚═╝     ╩ ╩╩ ╩╩╚═╩═╝        \033[0m\n" +
                     "\n" +
+                    "               \033[104m  ╦ ╦     ╔═╗╦ ╦╔═╗╔╦╗╔═╗╔╦╗  \033[0m\n" +
+                    "               \033[104m  ╚═╣     ║  ║ ║╚═╗ ║ ║ ║║║║  \033[0m\n" +
+                    "               \033[104m    ╩     ╚═╝╚═╝╚═╝ ╩ ╚═╝╩ ╩  \033[0m\n" +
+                    "\n" +
                     "\n" +
                     "\n" +
                     "               \033[45m  ╔═╗     ╔═╗╔═╗╔═╗╦═╗╔═╗╔═╗  \033[0m\n" +
@@ -54,29 +58,35 @@ public class Main {
             scanner.nextLine();
 
 
-            if(opcion != 0) {
+            if(opcion > 0) {
 
                 long tiempoInicio = System.currentTimeMillis();
                 int duracion = 0;
 
-                int alto = 3;
-                int ancho = 3;
-                int densidad = 8;
-                if (opcion == 2) {
+                int alto = 16;
+                int ancho = 31;
+                int totalMinas = 99;
+                if (opcion == 1) {
                     alto = 8;
                     ancho = 8;
-                    densidad = 7;
-                } else if (opcion == 3) {
-                    alto = 14;
-                    ancho = 14;
-                    densidad = 6;
+                    totalMinas = 10;
+                } else if (opcion == 2) {
+                    alto = 16;
+                    ancho = 16;
+                    totalMinas = 40;
+                } else if(opcion == 4){
+                    System.out.println("Filas:");
+                    alto = scanner.nextInt();
+                    System.out.println("Columnas:");
+                    ancho = scanner.nextInt();
+                    System.out.println("Minas:");
+                    totalMinas = scanner.nextInt();
                 }
 
                 int[][] cuentaMinas = new int[alto][ancho];
                 boolean[][] tieneMina = new boolean[alto][ancho];
                 boolean[][] destapada = new boolean[alto][ancho];
 
-                int totalMinas = alto * ancho / densidad;
 
                 for (int m = 0; m < totalMinas; ) {
                     int i = random.nextInt(alto);
@@ -105,13 +115,14 @@ public class Main {
                 int destapadas = 0;
                 int casillasSinMina = ancho * alto - totalMinas;
                 boolean gameOver = false;
+                boolean cheat = false;
 
                 while (true) {
                     System.out.print("\033\143");
 
                     duracion = (int) (System.currentTimeMillis() - tiempoInicio)/1000;
 
-                    if(debug) {
+                    if(cheat) {
                         System.out.print("    ");
                         for (int i = 0; i < ancho; i++) {
                             System.out.format("\033[90;103m%2d \033[0m", i);
@@ -155,16 +166,23 @@ public class Main {
                     if (gameOver || destapadas == casillasSinMina) break;
 
 
-                    int f = scanner.nextInt();
-                    if(f < 0){
-                        debug = !debug;
+                    int fila = scanner.nextInt();
+
+                    if(fila == -1){
+                        cheat = !cheat;
                         continue;
                     }
-                    int c = scanner.nextInt();
 
-                    if (f >= alto || c >= ancho) continue;
+                    if(fila == -2){
+                        gameOver = true;
+                        continue;
+                    }
 
-                    if (tieneMina[f][c]) {
+                    int columna = scanner.nextInt();
+
+                    if (fila >= alto || columna >= ancho) continue;
+
+                    if (tieneMina[fila][columna]) {
                         gameOver = true;
                         for (int i = 0; i < alto; i++) {
                             for (int j = 0; j < ancho; j++) {
@@ -172,9 +190,9 @@ public class Main {
                             }
                         }
                     } else {
-                        destapada[f][c] = true;
+                        destapada[fila][columna] = true;
                         destapadas++;
-                        if (cuentaMinas[f][c] == 0) {
+                        if (cuentaMinas[fila][columna] == 0) {
                             boolean destapoAlguna = true;
                             while (destapoAlguna) {
                                 destapoAlguna = false;
@@ -217,13 +235,15 @@ public class Main {
                             "  ╦ ╦╔═╗╦ ╦  ╦ ╦ ╦ ╔╗╔  \n" +
                             "  ╚╦╝║ ║║ ║  ║║║ ║ ║║║  \n" +
                             "   ╩ ╚═╝╚═╝  ╚╩╝ ╩ ╝╚╝  \033[0m");
-                    System.out.print("Name: ");
-                    String nombre = scanner.nextLine();
-                    FileWriter fileWriter = new FileWriter(ficheroScores, true);
-                    fileWriter.write(duracion + " " + nombre + "\n");
-                    fileWriter.close();
 
-                    opcion = 0;
+                    if(opcion < 4) {
+                        System.out.print("Name: ");
+                        String nombre = scanner.nextLine();
+                        FileWriter fileWriter = new FileWriter(ficheroScores, true);
+                        fileWriter.write(opcion + " " + duracion + " " + nombre + "\n");
+                        fileWriter.close();
+                        opcion = 0;
+                    }
                 }
             }
 
@@ -236,13 +256,18 @@ public class Main {
 
                 Scanner scannerScores = new Scanner(ficheroScores);
                 while(scannerScores.hasNext()){
+                    int nivel = scannerScores.nextInt();
                     int score = scannerScores.nextInt();
-                    String nombre = scannerScores.nextLine();
+                    String nombre = scannerScores.next() + scannerScores.nextLine();
 
-                    System.out.format("  \033[44m%20s \033[0m \033[42m  %8s \033[0m%n", nombre, score);
+                    System.out.format("  \033[44m%18s \033[0m \033[45m %6s \033[0m %6s \033[0m%n", nombre, score, niveles[nivel-1]);
                 }
 
                 scanner.nextLine();
+            }
+
+            if(opcion < 0){
+                return;
             }
         }
     }

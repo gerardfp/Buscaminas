@@ -4,8 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.Scanner;
+import java.util.*;
 
 public class ScoreManager {
     File ficheroScores;
@@ -15,27 +14,30 @@ public class ScoreManager {
         ficheroScores.createNewFile();
     }
 
-    void guardarPuntuacion(String nombre, int score) throws IOException {
+    void guardarPuntuacion(String nombre, int score, int level) throws IOException {
         FileWriter fileWriter = new FileWriter(ficheroScores, true);
-        fileWriter.write(score + " " + nombre + "\n");
+        fileWriter.write(level + " " + score + " " + nombre + "\n");
         fileWriter.close();
     }
 
-    Iterable<Puntuacion> obtenerPuntuaciones() throws FileNotFoundException {
+    List<Puntuacion> obtenerPuntuaciones() throws FileNotFoundException {
         Scanner scannerScores = new Scanner(ficheroScores);
-        return () -> new Iterator<Puntuacion>() {
-            @Override
-            public boolean hasNext() {
-                return scannerScores.hasNext();
-            }
 
-            @Override
-            public Puntuacion next() {
-                int score = scannerScores.nextInt();
-                String nombre = scannerScores.nextLine();
+        List<Puntuacion> resultado = new ArrayList<>();
+        while(scannerScores.hasNext()){
+            int nivel = scannerScores.nextInt();
+            int score = scannerScores.nextInt();
+            String nombre = scannerScores.next() + scannerScores.nextLine();
 
-                return new Puntuacion(nombre, score);
+            resultado.add(new Puntuacion(nivel, score, nombre));
+        }
+
+        resultado.sort((o1, o2) -> {
+            if(o1.nivel == o2.nivel){
+                return Integer.compare(o1.duracion, o2.duracion);
             }
-        };
+            return -Integer.compare(o1.nivel, o2.nivel);
+        });
+        return resultado;
     }
 }

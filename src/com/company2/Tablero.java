@@ -7,7 +7,6 @@ import java.util.Random;
 public class Tablero {
     int alto;
     int ancho;
-    int densidad;
     int totalMinas;
     int destapadas;
     int casillasSinMina;
@@ -15,21 +14,31 @@ public class Tablero {
     Casilla[][] casillas;
 
     Tablero(int dificultad) {
-
-        alto = 3;
-        ancho = 3;
-        densidad = 8;
-        if (dificultad == 2) {
+        alto = 16;
+        ancho = 31;
+        totalMinas = 99;
+        if (dificultad == 1) {
             alto = 8;
             ancho = 8;
-            densidad = 7;
-        } else if (dificultad == 3) {
-            alto = 14;
-            ancho = 14;
-            densidad = 6;
+            totalMinas = 10;
+        } else if (dificultad == 2) {
+            alto = 16;
+            ancho = 16;
+            totalMinas = 40;
         }
 
-        totalMinas = alto * ancho / densidad;
+        inicializar();
+    }
+
+    Tablero(int alto, int ancho, int totalMinas){
+        this.alto = alto;
+        this.ancho = ancho;
+        this.totalMinas = totalMinas;
+
+        inicializar();
+    }
+
+    void inicializar(){
         casillasSinMina = ancho * alto - totalMinas;
 
         casillas = new Casilla[alto][ancho];
@@ -40,10 +49,6 @@ public class Tablero {
             }
         }
 
-        inicializar();
-    }
-
-    void inicializar(){
         Random random = new Random();
 
         for (int minasColocadas = 0; minasColocadas < totalMinas; ) {

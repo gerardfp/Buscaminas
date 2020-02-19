@@ -8,8 +8,6 @@ public class Main {
         UserInterface ui = new UserInterface();
         ScoreManager sm = new ScoreManager();
 
-        boolean cheat = false;
-
         while (true) {
             ui.limpiarPantalla();
 
@@ -17,12 +15,19 @@ public class Main {
 
             int opcion = ui.leerOpcion();
 
-            if(opcion != 0) {
+            if(opcion > 0) {
 
-                Tablero tablero = new Tablero(opcion);
                 Cronometro cronometro = new Cronometro();
 
+                Tablero tablero;
+                if(opcion == 4){
+                    tablero = new Tablero(ui.leerAlto(), ui.leerAncho(), ui.leerMinas());
+                } else {
+                    tablero = new Tablero(opcion);
+                }
+
                 boolean gameOver = false;
+                boolean cheat = false;
 
                 while (true) {
 
@@ -39,8 +44,14 @@ public class Main {
                     if (gameOver || tablero.completado()) break;
 
                     int fila = ui.leerFila();
-                    if(fila < 0){
+
+                    if(fila == -1){
                         cheat = !cheat;
+                        continue;
+                    }
+
+                    if(fila == -2){
+                        gameOver = true;
                         continue;
                     }
 
@@ -63,22 +74,21 @@ public class Main {
                     ui.pressAnyKey();
                 } else {
                     ui.mostrarHasGanado();
-
-                    sm.guardarPuntuacion(ui.pedirNombre(), cronometro.duracion);
-
-                    opcion = 0;
+                    if(opcion < 4) {
+                        sm.guardarPuntuacion(ui.pedirNombre(), cronometro.duracion, opcion);
+                        opcion = 0;
+                    }
                 }
             }
 
             if(opcion == 0){
                 ui.limpiarPantalla();
-                ui.mostrarPuntuaciones();
-
-                for(Puntuacion puntuacion : sm.obtenerPuntuaciones()){
-                    ui.mostrarPuntuacion(puntuacion.nombre, puntuacion.duracion);
-                }
-
+                ui.mostrarPuntuaciones(sm.obtenerPuntuaciones());
                 ui.pressAnyKey();
+            }
+
+            if(opcion < 0){
+                return;
             }
         }
     }

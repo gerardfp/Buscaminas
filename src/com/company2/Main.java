@@ -1,23 +1,19 @@
 package com.company2;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        File ficheroScores = new File("scores.txt");
         UserInterface ui = new UserInterface();
-        Scores scores = new Scores();
+        ScoreManager sm = new ScoreManager();
 
-        boolean debug = false;
+        boolean cheat = false;
 
         while (true) {
-            ui.clearScreen();
+            ui.limpiarPantalla();
 
-            ui.printMainScreen();
+            ui.mostrarPantallaPrincipal();
 
             int opcion = ui.leerOpcion();
 
@@ -32,19 +28,19 @@ public class Main {
 
                     cronometro.actualizar();
 
-                    ui.clearScreen();
+                    ui.limpiarPantalla();
 
-                    if(debug) tablero.mostrarDebug();
+                    if(cheat) ui.mostrarTableroCheat(tablero);
 
-                    ui.printTime(cronometro.duracion);
+                    ui.mostrarTiempo(cronometro.duracion);
 
-                    tablero.mostrar();
+                    ui.mostrarTablero(tablero);
 
                     if (gameOver || tablero.completado()) break;
 
                     int fila = ui.leerFila();
                     if(fila < 0){
-                        debug = !debug;
+                        cheat = !cheat;
                         continue;
                     }
 
@@ -63,30 +59,23 @@ public class Main {
                 ui.pressAnyKey();
 
                 if (gameOver) {
-                    ui.printLoose();
+                    ui.mostrarHasPerdido();
                     ui.pressAnyKey();
                 } else {
-                    ui.printWin();
+                    ui.mostrarHasGanado();
 
-                    String nombre = ui.pedirNombre();
-
-                    scores.saveScore(nombre, cronometro.duracion);
+                    sm.guardarPuntuacion(ui.pedirNombre(), cronometro.duracion);
 
                     opcion = 0;
                 }
             }
 
             if(opcion == 0){
-                ui.clearScreen();
-                ui.printTopScores();
+                ui.limpiarPantalla();
+                ui.mostrarPuntuaciones();
 
-                // loadScores
-                Scanner scannerScores = new Scanner(ficheroScores);
-                while(scannerScores.hasNext()){
-                    int score = scannerScores.nextInt();
-                    String nombre = scannerScores.nextLine();
-
-                    ui.printScore(nombre, score);
+                for(Puntuacion puntuacion : sm.obtenerPuntuaciones()){
+                    ui.mostrarPuntuacion(puntuacion.nombre, puntuacion.duracion);
                 }
 
                 ui.pressAnyKey();

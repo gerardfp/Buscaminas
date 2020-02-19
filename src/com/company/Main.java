@@ -112,13 +112,13 @@ public class Main {
                     duracion = (int) (System.currentTimeMillis() - tiempoInicio)/1000;
 
                     if(debug) {
-                        System.out.print("   ");
+                        System.out.print("    ");
                         for (int i = 0; i < ancho; i++) {
-                            System.out.format("%2d ", i);
+                            System.out.format("\033[90;103m%2d \033[0m", i);
                         }
                         System.out.println();
                         for (int i = 0; i < alto; i++) {
-                            System.out.format("%2d ", i);
+                            System.out.format(" \033[90;105m%2d \033[0m", i);
                             for (int j = 0; j < ancho; j++) {
                                 if (tieneMina[i][j]) {
                                     System.out.print(colores[10] + " * ");
@@ -182,15 +182,10 @@ public class Main {
                                     for (int j = 0; j < ancho; j++) {
                                         if (destapada[i][j] && cuentaMinas[i][j] == 0) {
                                             int[][] vecinas = {
-                                                    {i - 1, j},
-                                                    {i, j - 1}, {i, j + 1},
-                                                    {i + 1, j}
+                                                    {i - 1, j - 1}, {i - 1, j}, {i - 1, j + 1},
+                                                    {i    , j - 1},             {i    , j + 1},
+                                                    {i + 1, j - 1}, {i + 1, j}, {i + 1, j + 1},
                                             };
-//                                    int[][] vecinas = {
-//                                            {i - 1, j - 1}, {i - 1, j}, {i - 1, j + 1},
-//                                            {i    , j - 1},             {i    , j + 1},
-//                                            {i + 1, j - 1}, {i + 1, j}, {i + 1, j + 1},
-//                                    };
 
                                             for (int k = 0; k < vecinas.length; k++) {
                                                 int vf = vecinas[k][0];
